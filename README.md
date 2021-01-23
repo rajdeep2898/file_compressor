@@ -2,7 +2,7 @@
 
 > Exchange co-ordinates between files by reducing the file size for intermediate file.
 
-This is a Node application. You require latest version on node and npm installed.
+This is a Node application. You require the latest version of node and npm installed.
 
 # Quick Start 🚀
 
