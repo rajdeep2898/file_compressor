@@ -26,7 +26,7 @@ const convertToNumber = (data, flag) => {
   return num;
 };
 const convertToEncrypt = (data) => {
-  return data.toString(32);
+  return data.toString(36);
 };
 
 const writeData = () => {
@@ -47,13 +47,14 @@ const writeData = () => {
       value += convertToNumber(num, 0);
 
       encrypt = convertToEncrypt(value);
-      text += encrypt;
-      text += ch;
+      text += encrypt + ",";
+      // text += ch;
       num = "";
-    } else {
-      text += ch;
+    } else if (ch == "]" && data[i - 1] == "]") {
+      text += "\n";
     }
   }
+  text = text.slice(0, -2);
   fs.writeFile("output.txt", text, (err) => {
     if (err) return console.log(err);
     console.log("Success Message: Data encrypted and stored in output.txt");

@@ -2,25 +2,21 @@ const inquirer = require("./inquirer");
 const fs = require("fs");
 
 const convertToDecrypt = (data) => {
-  return parseInt(data, 32);
+  return parseInt(data, 36);
 };
-// console.log(convertToDecrypt("b5eq4cf2"));
 const readData = async () => {
   const input = await inquirer.askInput();
   let data = fs.readFileSync(input.fileName, "utf-8");
-  var text = "";
+  var text = "[[";
   var num = "";
   var value = 0;
   var x = 1;
-  var f;
+  var f = 1;
   for (var i = 0; i < data.length; i++) {
     var ch = data[i];
-    if (ch != "[" && ch != "]" && ch != ",") {
+    if (ch != "," && ch != "\n") {
       num += ch;
-    } else if (ch == "," && data[i - 1] != "]") {
-      value = convertToNumber(num, 1);
-      num = "";
-    } else if (ch == "]" && data[i - 1] != "[" && data[i - 1] != "]") {
+    } else if (ch == ",") {
       decrypt = convertToDecrypt(num);
       var number2 = decrypt % 1000000;
 
@@ -36,13 +32,19 @@ const readData = async () => {
         parseInt(number2 / 100).toString() +
         "." +
         (number2 % 100).toString();
+      if (f == 0) text += ",[";
+      else text += "[";
+      f = 0;
       text += temp;
-      text += ch;
+      text += "]";
       num = "";
-    } else {
-      text += ch;
+    } else if (ch == "\n") {
+      text += "],[";
+      f = 1;
     }
   }
+  text += "]]";
+  // console.log(text);
   fs.writeFile("result.txt", text, (err) => {
     if (err) return console.log(err);
     console.log(
